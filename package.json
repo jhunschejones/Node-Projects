@@ -1,0 +1,24 @@
+{
+  "name": "my_family",
+  "version": "1.0.0",
+  "description": "This is a basic HTML web page I am using to experiment with node.js and MySQL.",
+  "main": "db_connection.js",
+  "dependencies": {
+    "mysql": "^2.15.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhunschejones/my_family.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jhunschejones/my_family/issues"
+  },
+  "homepage": "https://github.com/jhunschejones/my_family#readme"
+}
