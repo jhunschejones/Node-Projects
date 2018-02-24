@@ -1,0 +1,27 @@
+img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 3px 3px 10px gray;
+}
+
+.list-group {
+    box-shadow: 3px 3px 10px #aaaaaa;
+}
+
+/* Adjusting spacing between two main elements */
+.row, .col {
+    margin: 10px;
+    padding: 0px;
+}
+
+/* Styles for footer */
+.form-check small, li small {
+    color: lightgray;
+}
+
+hr {
+    margin-top: 25px;
+    margin-bottom: 0px;
+    border-top-style: dotted;
+}
