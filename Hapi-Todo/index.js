@@ -43,10 +43,22 @@ server.route([
         method: 'POST',
         path: '/api/v1/todolist',
         handler: function(request, reply) {
-            var newTask = { "task": request.payload.task, "owner": request.payload.owner};
-            todolist.push(newTask);
-            // sends updated todolist along with code 201 'created'
-            reply(todolist).code(201)
+            // find the item in the database with the highest index
+            var latest_task = Task.find().sort({'index': -1}).limit(1);
+            latest_task.exec(function(err, task) {
+                // add one to the highest index to create new index
+                new_index = task[0]["index"] + 1;
+                // build new task
+                newTask = new Task({
+                    'task': request.payload.task,
+                    'owner': request.payload.owner,
+                    'index': new_index 
+                })
+                newTask.save(function(err, newTask) {
+                    // code 201 'created'
+                    reply(newTask).code(201);
+                })
+            })
         }
     },
     // ======= path for each item ========
@@ -55,7 +67,15 @@ server.route([
         // this indicates a URI paramenter
         path: '/api/v1/todolist/{index}',
         handler: function(request, reply) {
-            reply(todolist[request.params.index -1])
+            var result = Task.findOne({"index": request.params.index});
+            result.exec(function(err,task) {
+                if (task) {
+                    reply(task);
+                } else {
+                    // send 404 if this index does not exist
+                    reply().code(404)
+                }
+            })
         }
     },
     {
@@ -63,9 +83,16 @@ server.route([
         // this indicates a URI paramenter
         path: '/api/v1/todolist/{index}',
         handler: function(request, reply) {
-            var newTask = { "task": request.payload.task, "owner": request.payload.owner};
-            todolist[request.params.index -1] = newTask
-            reply(todolist[request.params.index -1])
+            // payload comes from post body
+            // params takes uri parameter
+            var updateData = {
+                'task': request.payload.task,
+                'owner': request.payload.owner,
+                'index': request.params.index
+            }
+            Task.findOneAndUpdate({'index':request.params.index},updateData, {new: true}, function(err, doc) {
+                reply(doc);
+            })
         }
     },
     {
@@ -73,9 +100,10 @@ server.route([
         // this indicates a URI paramenter
         path: '/api/v1/todolist/{index}',
         handler: function(request, reply) {
-            delete todolist[request.params.index -1]
-            // empty reply with code 204 'no content'
-            reply().code(204)
+            Task.findOneAndRemove({index: request.params.index}, function(err, response) {
+                // empty reply with code 204 'no content'
+                reply().code(204)
+            })
         }
     }
 ]);
