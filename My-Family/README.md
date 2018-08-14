@@ -1,0 +1,3 @@
+# My Family
+
+This is a basic HTML web page I built while attending the Tech Academy in 2018 to experiment with Node.js and MySQL. I struggled to implement the database and learned a lot about the project planning process while working on this app. Though in the end it didn’t end up production-worthy, I was able to use the lessons I learned here to complete the [Dani Animals 3](https://github.com/jhunschejones/Dani-Animals-3) app, which was my first functional Node.js app! *(Visit the repo to learn more)*

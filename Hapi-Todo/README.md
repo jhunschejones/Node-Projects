@@ -1,0 +1,3 @@
+# Hapi Todo
+
+Another to-do list? Well, there's something to be said about the easy-to-understand way a to-do list implements the functionality of a CRUD application. After completing a handful of Node.js apps using the Express framework, I wanted to experiment with the Hapi framework to expand my toolbelt. Though this app is a simple REST Api, I was excited to discover how much of the web development process I recognized, even working in another framework. Hapi has some additional functionality built in that lends itself to this type of application, so it was a great oportunity to compare and contrast with what I know about Express.
