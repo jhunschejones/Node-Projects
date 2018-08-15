@@ -9,7 +9,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['Fitbit Hapi'],
+  app_name: ['Hapi Fitbit'],
   /**
    * Your New Relic license key.
    */
