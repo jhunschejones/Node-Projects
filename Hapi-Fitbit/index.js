@@ -2,6 +2,7 @@ var newrelic = require('newrelic');
 var Hapi = require('hapi');
 var Fitbit = require('fitbit-node')
 var mongoose = require('mongoose')
+var Q = require('q');
 
 mongoose.connect('mongodb://user:password1@ds119702.mlab.com:19702/hapi-practice');
 var db = mongoose.connection;
@@ -20,14 +21,19 @@ var redirect_uri = "https://hapi-fitbit.herokuapp.com/fitbit_oauth_callback";
 var scope = "activity profile";
 
 var server = new Hapi.Server();
-server.connection({ port: 3000 });
+var port = parseInt(process.env.PORT, 10) || '3000'
+
+    server.connection({ 
+        host: '0.0.0.0', 
+        port: port
+});
 
 server.route([
     {
         method: 'GET',
         path: '/',
         handler: function(request, reply) {
-            reply('Hello world from hapi');
+            reply('This is a web API connecting Fitbit with a MongoDB database using Hapi and Node.js. Navigate to "/fitbit" to authenticate, then "/api/v1/users" to check out the endpoints you can hit with a tool like curl or Postman. Give it a spin and enjoy!');
         }
     },
     {
