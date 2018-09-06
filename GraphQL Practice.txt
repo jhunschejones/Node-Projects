@@ -1,0 +1,125 @@
+# using fragments
+{
+  # this is an alias 
+  graphqlProject: repository(name: "graphql", owner: "facebook") {
+    ...repoFields
+  }
+  reactProject: repository(name: "react", owner: "facebook") {
+    ...repoFields
+  }
+}
+
+fragment repoFields on Repository {
+  id
+  description
+  homepageUrl
+}
+
+# edges, a one-to-many relationship
+# "You must provide a `first` or `last` value to properly paginate the `watchers` connection.",
+{
+  viewer {
+    id
+    name
+    repositories(last: 5) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+}
+
+# nested request for lots of very specific data
+{
+  repository(owner: "github", name: "opensource.guide") {
+    id
+    name
+    description
+    watchers(first: 5) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    pullRequests(last: 5) {
+      edges {
+        node {
+          author {
+            avatarUrl
+          }
+        }
+      }
+    }
+  }
+}
+
+# variable definitions
+query FindFirstFive($login: String!) {
+  organization(login: $login) {
+    id
+    name
+    members(first: 5) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+}
+
+  # query variables
+  {
+    "login": "facebook"
+  }
+
+
+# creating mutations
+mutation NewComment($input: AddCommentInput!) {
+  addComment(input: $input) {
+    clientMutationId
+    subject {
+      id
+    }
+  }
+}
+
+  #query variables
+  {
+    "input": {
+      "clientMutationId": "333333",
+      "subjectId": "MDU6SXNzdWUyMDkwMTAxOTg=",
+     "body": "Thanks for the awesome class Eve!"
+    }
+  }
+
+# check if mutation was created
+{
+  repositoryOwner(login: "eveporcello") {
+    repository(name: "graph-ql-testing") {
+      issues(first: 1) {
+        edges {
+          node {
+            id
+            title
+            body
+            comments(last: 5) {
+              edges {
+                node {
+                  id
+                  body
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
