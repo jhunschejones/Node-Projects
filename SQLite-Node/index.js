@@ -1,24 +1,55 @@
-const sqlite3 = require('sqlite3').verbose();
+const restify = require('restify')
+const server = restify.createServer({
+  name: "NRQLjokes",
+  version: 1.0
+})
 
-// open the database connection
+server.use(restify.plugins.jsonBodyParser({ mapParams: true }))
+server.use(restify.plugins.acceptParser(server.acceptable))
+server.use(restify.plugins.queryParser({ mapParams: true }))
+server.use(restify.plugins.fullResponse())
+
+const sqlite3 = require('sqlite3').verbose();
 let db = new sqlite3.Database('./db/sample.db')
 
-// create the database
-// db.run('CREATE TABLE IF NOT EXISTS danaNRQLjokes(id INTEGER PRIMARY KEY, joke TEXT, answer TEXT)');
+server.listen(process.env.PORT || 3000, () => {
+  server.get('/public/*', restify.plugins.serveStatic({
+    directory: __dirname,
+  }))
 
-// insert a row into the database
-db.run(`INSERT INTO danaNRQLjokes(joke, answer) VALUES(?, ?)`, ['What did the Facet say to the Timeseries?', 'What an event!'], function(err) {
-    if (err) {
-        return console.log(err.message);
+  server.get('/api/v1', function(req, res, next) {
+    var jokes = { 
+      "jokes": []
     }
 
-    console.log(`A row has been inserted with rowid ${this.lastID}`);
-});
+    db.all('SELECT * FROM NRQLjokes', [], (err, rows) => {
+      if (err) {
+        throw err;
+      }
+      rows.forEach((row) => {
+        jokes.jokes.push({
+          "joke" : row.joke,
+          "answer" : row.answer
+        })
+      });
+      res.send(200, jokes);
+    });
+    return next();
+  });
 
-// close the database connection after all queries have completed
-db.close((err) => {
-    if (err) {
-        return console.error(err.message);
+  server.post('/api/v1', (req, res, next) => {
+    if (req.body.joke != null && req.body.answer != null) {
+      db.run(`INSERT INTO NRQLjokes(joke, answer) VALUES(?, ?)`, [req.body.joke, req.body.answer], function(err) {
+        if (err) {
+          res.send(500, {"error" : err})
+          return console.log(err.message);
+        }
+        res.send(200, {"message" : "successful post"})
+        // console.log(`A row has been inserted with rowid ${this.lastID}`);
+      });
+    } else {
+      res.send(500, {"message" : "invalid post, body must contain string values for 'joke' and 'answer'"})
     }
-    console.log('Closing the database connection.')
-});
+    return next()
+  })
+})

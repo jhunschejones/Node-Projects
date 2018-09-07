@@ -9,6 +9,7 @@
   "author": "Joshua Jones",
   "dependencies": {
     "nodemon": "^1.18.4",
+    "restify": "^7.2.1",
     "sqlite3": "^4.0.2"
   }
 }
