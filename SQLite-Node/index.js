@@ -13,9 +13,10 @@ const sqlite3 = require('sqlite3').verbose();
 let db = new sqlite3.Database('./db/sample.db')
 
 server.listen(process.env.PORT || 3000, () => {
-  server.get('/public/*', restify.plugins.serveStatic({
-    directory: __dirname,
-  }))
+  server.get('/*/', restify.plugins.serveStatic({
+    'directory': '.',
+    'default': 'index.html'
+  }));
 
   server.get('/api/v1', function(req, res, next) {
     var jokes = { 
@@ -29,7 +30,7 @@ server.listen(process.env.PORT || 3000, () => {
       rows.forEach((row) => {
         jokes.jokes.push({
           "joke" : row.joke,
-          "answer" : row.answer
+          "punchline" : row.punchline
         })
       });
       res.send(200, jokes);
@@ -38,17 +39,19 @@ server.listen(process.env.PORT || 3000, () => {
   });
 
   server.post('/api/v1', (req, res, next) => {
-    if (req.body.joke != null && req.body.answer != null) {
-      db.run(`INSERT INTO NRQLjokes(joke, answer) VALUES(?, ?)`, [req.body.joke, req.body.answer], function(err) {
+    if (req.body.joke != null && req.body.punchline != null && req.body.joke != "" && req.body.punchline != "") {
+      db.run(`INSERT INTO NRQLjokes(joke, punchline) VALUES(?, ?)`, [req.body.joke, req.body.punchline], function(err) {
         if (err) {
           res.send(500, {"error" : err})
           return console.log(err.message);
         }
         res.send(200, {"message" : "successful post"})
-        // console.log(`A row has been inserted with rowid ${this.lastID}`);
       });
     } else {
-      res.send(500, {"message" : "invalid post, body must contain string values for 'joke' and 'answer'"})
+      res.send(500, 
+        {
+          "message" : "invalid post, body must contain string values for 'joke' and 'punchline'"
+        })
     }
     return next()
   })

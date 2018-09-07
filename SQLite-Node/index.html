@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <style>
+      #main_header {
+        margin-top: 50px;
+        text-align: center;
+      }
+      #all_jokes {
+        overflow-y: scroll;
+        max-height: 80vh;
+        text-align: center;
+      }
+      #joke_input,
+      #punchline_input {
+        max-width: 500px;
+        margin: auto;
+        text-align: center;
+      }
+      #submit_button {
+        margin: auto;
+        display: block;
+      }
+      #punchline_input,
+      #submit_button {
+        margin-top: 5px;
+      }
+    
+    </style>
+
+    <title>NRQL Jokes &nbsp;//&nbsp; Home</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 id="main_header">The NRQL Jokes:</h1>
+      <br/>
+      <p id="all_jokes"></p>
+
+      <form>
+        <input type="text" class="form-control" id="joke_input" placeholder="Enter a Joke">
+        <input type="text" class="form-control" id="punchline_input" placeholder="Enter a Punchline">
+        <button type="submit" class="btn btn-primary" id="submit_button">Submit</button>
+      </form>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    
+    <script type="text/JavaScript">
+      function printJokes(jokes) {
+        $("#all_jokes").html("")
+        jokes.forEach(element => {
+          $("#all_jokes").append(
+            element.joke + "<br/><i>" + element.punchline + "</i><br/><br/>"
+          )
+        });
+      }
+      function getAllJokes() {
+        $.ajax({
+          method: "GET",
+          url: "/api/v1",
+          success: function(data) {
+            printJokes(data.jokes)
+          }
+        })
+      }
+      function addJoke() {
+        event.preventDefault();
+        var joke = $("#joke_input").val()
+        var punchline = $("#punchline_input").val()
+
+        var jokeObject = {
+          "joke" : joke,
+          "punchline" : punchline
+        }
+
+        console.log(jokeObject)
+        
+        $.ajax({
+          method: "POST",
+          url: "/api/v1",
+          data: JSON.stringify(jokeObject),
+          contentType: "application/json",
+          success: getAllJokes
+        })
+      }
+      document.getElementById("submit_button").addEventListener("click", addJoke);
+
+      getAllJokes()
+    </script>
+  </body>
+</html>
