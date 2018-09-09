@@ -1,9 +1,17 @@
 const restify = require('restify')
+const logger  = require('morgan')
+const fs = require('fs')
+const path = require('path')
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'application.log'), {flags: 'a'})
 const server = restify.createServer({
   name: "NRQLjokes",
   version: 1.0
 })
 
+// write logs to file
+server.use(logger(':method :url :status - :response-time ms', {stream: accessLogStream}));
+// write logs to console
+server.use(logger('dev'))
 server.use(restify.plugins.jsonBodyParser({ mapParams: true }))
 server.use(restify.plugins.acceptParser(server.acceptable))
 server.use(restify.plugins.queryParser({ mapParams: true }))
@@ -14,7 +22,7 @@ let db = new sqlite3.Database('./db/sample.db')
 
 server.listen(process.env.PORT || 3000, () => {
   server.get('/*/', restify.plugins.serveStatic({
-    'directory': '.',
+    'directory': __dirname,
     'default': 'index.html'
   }));
 
@@ -29,6 +37,7 @@ server.listen(process.env.PORT || 3000, () => {
       }
       rows.forEach((row) => {
         jokes.jokes.push({
+          "id" : row.id,
           "joke" : row.joke,
           "punchline" : row.punchline
         })
@@ -55,4 +64,19 @@ server.listen(process.env.PORT || 3000, () => {
     }
     return next()
   })
+
+  server.del('/api/v1/:id', (req, res, next) => 
+    db.run(`DELETE FROM NRQLjokes WHERE id=?`, req.params.id, function(err) {
+      if (err) {
+        res.send((500, {"error" : err}))
+        return console.error(err.message);
+      }
+
+      if (this.changes < 1) {
+        res.send(404, {"message" : `could not find a joke with id: ${req.params.id}`})
+      } else {
+        res.send(200, {"message" : `successfully deleted joke id: ${req.params.id}`})
+      }
+    })
+  )
 })
