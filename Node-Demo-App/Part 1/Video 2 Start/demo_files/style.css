@@ -1,0 +1,60 @@
+@import url("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css");
+
+#main_header {
+  margin-top: 50px;
+  text-align: center;
+}
+#all_jokes {
+  overflow-y: scroll;
+  max-height: 60vh;
+  text-align: center;
+}
+.joke {
+  text-align: center;
+}
+.punchline {
+  text-align: center;
+  font-style: italic;
+}
+.delete-button {
+  position: absolute;
+  margin-left: 30px;
+  display: none;
+  cursor: pointer;
+  opacity: 0.3;
+}
+/* Shows delete button only when user hovers over the joke */
+.joke:hover .delete-button {
+  display: inline;
+}
+#joke_input,
+#punchline_input {
+  max-width: 500px;
+  margin: auto;
+  text-align: center;
+}
+#punchline_input {
+  margin-top: 5px;
+}
+#joke_input {
+  margin-top: 20px;
+}
+#submit_button {
+  margin: auto;
+  display: block;
+  margin-top: 10px;
+}
+/* adding some New Relic button colors */
+/* .btn-nr {
+  background: #5AC6CC;
+  border: #0098A1;
+}
+.btn-nr:hover {
+  background: #0098A1;
+}
+.btn-nr::selection, 
+.btn-nr:scope, 
+.btn-nr:active {
+  background: #5AC6CC;
+  border: #0098A1;
+} */
