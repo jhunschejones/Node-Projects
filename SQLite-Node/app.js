@@ -94,7 +94,7 @@ server.listen(process.env.PORT || 3000, () => {
 
   server.del('/api/v1/:id', (req, res, next) => {
     newrelic.setTransactionName('delete_joke');
-    db.run(`DELETE FROM NRQLjokes WHERE id=?`, req.params.id, (err) => {
+    db.run(`DELETE FROM NRQLjokes WHERE id=?`, req.params.id, function(err) {
       if (err) {
         res.send((500, {"error" : err}))
         return console.error(err.message);

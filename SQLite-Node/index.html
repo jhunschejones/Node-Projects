@@ -49,7 +49,7 @@
           alert("Both Joke and Punchline fields must be filled out.")
           return
         }
-        var jokeObject = { "joke" : joke, "punchline" : punchline }
+        var jokeObject = { "joke": joke, "punchline": punchline }
         $.ajax({
           method: "POST",
           url: "/api/v1",
@@ -68,10 +68,7 @@
         })
       }
       document.getElementById("submit_button").addEventListener("click", addJoke);
-
-      $(document).ready(() => {
-        getAllJokes()
-      });
+      $(document).ready(() => { getAllJokes() });
     </script>
   </body>
 </html>
