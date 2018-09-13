@@ -1,12 +1,10 @@
 const restify = require('restify')
-const logger  = require('morgan')
 const server = restify.createServer({
   name: "NRQLjokes",
   version: 1.0
 })
-server.use(logger('dev'))
 
-const sqlite3 = require('sqlite3').verbose();
+const sqlite3 = require('sqlite3').verbose()
 let db = new sqlite3.Database('./db/sample.db')
 
 server.listen(process.env.PORT || 3000, () => {
@@ -17,17 +15,17 @@ server.listen(process.env.PORT || 3000, () => {
 
     db.all('SELECT * FROM NRQLjokes', [], (err, rows) => {
       if (err) {
-        throw err;
+        throw err
       }
       rows.forEach((row) => {
         data.jokes.push({
-          "id" : row.id,
-          "joke" : row.joke,
-          "punchline" : row.punchline
+          "id": row.id,
+          "joke": row.joke,
+          "punchline": row.punchline
         })
-      });
-      res.send(200, data);
-    });
-    return next();
+      })
+      res.send(200, data)
+    })
+    return next()
   })
 })

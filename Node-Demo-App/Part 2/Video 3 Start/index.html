@@ -19,6 +19,20 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> 
-    <script type="text/JavaScript"></script>
+    <script type="text/JavaScript">
+      function getAllJokes(){
+        $("#all_jokes").html('')
+        $.ajax({
+          method: "GET",
+          url: "/api/v1",
+          success: (data) => {
+            data.jokes.forEach(el => {
+              $("#all_jokes").append(`<div><div class="joke">${el.joke}</div><div class="punchline">${el.punchline}</div></div><br/>`)              
+            });
+          }
+        })
+      }
+      $(document).ready(() => { getAllJokes() })
+    </script>
   </body>
 </html>
