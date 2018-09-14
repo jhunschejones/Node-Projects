@@ -17,34 +17,38 @@ server.listen(process.env.PORT || 3000, () => {
   }))
 
   server.get('/403', (req, res, next) => {
-    var message = {'message': 'this resource has been moved'}
-    // newrelic.addCustomAttributes({
-    //   'my message': JSON.stringify(message)
-    // })
+    var message = { "message": "this resource has moved" }
+    newrelic.addCustomAttributes({
+      "my message": JSON.stringify(message)
+    })
     res.send(403, message)
   })
 
   server.get('/403/:id', (req, res, next) => {
-    var message = {'message': 'this resource has been moved'}
-    // newrelic.addCustomAttributes({
-    //   'my message': JSON.stringify(message),
-    //   'search string': req.params.id
-    // })
+    var message = { "message": "this resource has moved" }
+    newrelic.addCustomAttributes({
+      "my message": JSON.stringify(message),
+      "search string": req.params.id
+    })
     res.send(403, message)
   })
-
+  
   server.get('/api/v1', (req, res, next) => {
-    var data = { 
+    newrelic.setTransactionName("get_all_jokes")
+    var data = {
       "jokes": []
     }
 
     db.all('SELECT * FROM NRQLjokes', [], (err, rows) => {
       if (err) {
-        // newrelic.noticeError(err)
         throw err
+        // newrelic.noticeError(err)
+        // console.log(err)
       }
       // try {
+        var count = 0
         rows.forEach((row) => {
+          count ++
           data.jokes.push({
             "id": row.id,
             "joke": row.joke,
@@ -55,44 +59,45 @@ server.listen(process.env.PORT || 3000, () => {
       //   newrelic.noticeError(error)
       //   console.log(error)
       // }
+      newrelic.recordMetric('Custom/Database/TotalJokes', count)
       res.send(200, data)
     })
     return next()
   })
 
   server.post('/api/v1', (req, res, next) => {
-    // newrelic.setTransactionName('add_new_joke')
-    if (req.body.joke != null && req.body.punchline != null && req.body.joke != "" && req.body.punchline != "") {
+    newrelic.setTransactionName("add_new_joke")
+    // back end data validation
+    if (req.body.joke != null && req.body.punchline != null && req.body.joke != "" && req.body.punchline != ""){
       db.run('INSERT INTO NRQLjokes(joke, punchline) VALUES(?, ?)', [req.body.joke, req.body.punchline], (err) => {
-        // handles a query statement error
         if (err) {
+          // handling server error
           res.send(500, {"error": err})
-          return console.log(err.message)
+          return console.log(err.message);
         }
-        // newrelic.recordCustomEvent('add_joke', {'joke': req.body.joke, 'punchline': req.body.punchline})
         res.send(200, {"message": "successful post"})
       })
+      newrelic.recordCustomEvent("add_joke", {"joke": req.body.joke, "punchline": req.body.punchline})
     } else {
-      // handles an invalid input data error
+      // handle invalid user data
       res.send(500, {"message": "invalid post, body must contain string values for 'joke' and 'punchline'"})
     }
     return next()
   })
 
   server.del('/api/v1/:id', (req, res, next) => {
-    // newrelic.setTransactionName('delete_joke')
+    newrelic.setTransactionName("delete_joke")
     db.run('DELETE FROM NRQLjokes WHERE id=?', req.params.id, function(err) {
       if (err) {
-        res.send((500, {"error": err}))
+        res.send(500, {"error": err})
         return console.error(err.message)
       }
 
-      // this.changes returns 0 if no changes were made
       if (this.changes < 1) {
         res.send(404, {"message": `could not find a joke with id: ${req.params.id}`})
       } else {
-        // newrelic.recordCustomEvent('delete_joke', {'message': `successfully deleted joke id: ${req.params.id}`})
         res.send(200, {"message": `successfully deleted joke id: ${req.params.id}`})
+        newrelic.recordCustomEvent("delete_joke", {"message": `successfully deleted joke id: ${req.params.id}`})
       }
     })
   })

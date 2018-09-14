@@ -9,11 +9,11 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['Node-Demo-App'],
+  app_name: ['Node-Demo-App-01'],
   /**
    * Your New Relic license key.
    */
-  license_key: '85168d0cd8298c58f66ff6d742281a61efd79c43',
+  license_key: 'XXXXXXXX',
   logging: {
     /**
      * Level at which to log. 'trace' is most useful to New Relic when diagnosing
@@ -50,8 +50,8 @@ exports.config = {
       'response.headers.setCookie*',
       'response.headers.x*'
     ]
+  },
+  error_collector: {
+    ignore_status_codes: [404, 403]
   }
-  // error_collector: {
-  //   ignore_status_codes: [404, 403]
-  // }
 }
