@@ -56,7 +56,9 @@ server.listen(process.env.PORT || 3000, () => {
         throw err;
       }
       // try {
+        var count = 0
         rows.forEach((row) => {
+          count ++
           jokes.jokes.push({
             "id" : row.id,
             "joke" : row.joke,
@@ -67,6 +69,7 @@ server.listen(process.env.PORT || 3000, () => {
       //   newrelic.noticeError(error)
       //   console.log(error)
       // }
+      newrelic.recordMetric('Custom/Database/TotalJokes', count)
       res.send(200, jokes);
     });
     return next();
