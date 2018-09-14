@@ -6,7 +6,7 @@ This repository displays examples from my learning process as I worked to gain f
 * [Fitbit API built with Hapi](https://github.com/jhunschejones/Node-Practice/tree/master/Hapi-Fitbit)
 * [To-Do List API built with Restify](https://github.com/jhunschejones/Node-Practice/tree/master/Restify-To-Do)
 * [Application and Request Logging in Express](https://github.com/jhunschejones/Node-Practice/tree/master/Rock-Paper-Scissors-Express)
-* [RESTful Web App built with Restify and SQLite](https://github.com/jhunschejones/Node-Practice/tree/master/SQLite-Node)
+* [RESTful Web App built with Restify and SQLite](https://github.com/jhunschejones/Node-Restify-New-Relic) *(With Coding Videos!)*
 
 ---
 
