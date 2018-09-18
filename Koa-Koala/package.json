@@ -1,0 +1,16 @@
+{
+  "name": "koa-koala",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "koa": "^2.5.3",
+    "koa-ejs": "^4.1.2",
+    "koa-morgan": "^1.0.1",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "newrelic": "^4.8.1"
+  }
+}
