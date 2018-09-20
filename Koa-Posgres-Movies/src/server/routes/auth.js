@@ -24,7 +24,7 @@ router.post('/auth/register', async (ctx) => {
     })(ctx)
   } catch (err) {
     // returns true when there is a duplicate user
-    console.log("Duplicate user name: " + JSON.stringify(err).includes('already exists'))
+    console.warn("Error! Duplicate user name: " + JSON.stringify(err).includes('already exists'))
     ctx.redirect('/auth/register')
   }
 })

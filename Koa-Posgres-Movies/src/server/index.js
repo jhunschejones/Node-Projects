@@ -4,6 +4,7 @@ const bodyParser = require('koa-bodyparser')
 // const favicon = require('koa-favicon')
 const session = require('koa-session')
 const passport = require('koa-passport')
+const RedisStore = require('koa-redis')
 
 const indexRoutes = require('./routes/index')
 const movieRoutes = require('./routes/movies')
@@ -14,7 +15,17 @@ const PORT = process.env.PORT || 3000
 
 // sessions
 app.keys = ['secret-key']
-app.use(session(app))
+
+console.log(process.env.NODE_ENV)
+
+if (process.env.NODE_ENV == 'production') {
+  // Replacing session store with redis
+  app.use(session({
+    store: new RedisStore()
+  }, app))
+} else {
+  app.use(session(app))
+}
 
 // body parser
 app.use(bodyParser())
