@@ -54,7 +54,9 @@ router.post('/auth/login', async (ctx) => {
       ctx.redirect('/auth/status')
     } else {
       ctx.status = 400
-      ctx.body = { status: 'error' }
+      // ctx.body = { status: 'error' }
+      console.warn("Unable to sign in: ", ctx.request.body)
+      ctx.redirect('/auth/login')
     }
   })(ctx)
 })

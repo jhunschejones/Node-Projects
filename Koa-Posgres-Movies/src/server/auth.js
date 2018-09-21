@@ -7,7 +7,7 @@ const options = {}
 
 passport.serializeUser((user, done) => { done(null, user.id) })
 
-function comparePassword(userPassword, databasePassword) {
+function comparePass(userPassword, databasePassword) {
   return bcrypt.compareSync(userPassword, databasePassword)
 }
 
@@ -21,10 +21,10 @@ passport.use(new LocalStrategy(options, (username, password, done) => {
   knex('users').where({ username }).first()
   .then((user) => {
     if (!user) return done(null, false)
-    if (!comparePassword(password, user.password)) {
-      return done(null, user)
-    } else {
+    if (!comparePass(password, user.password)) {
       return done(null, false)
+    } else {
+      return done(null, user)
     }
   })
   .catch((err) => { return done(err) })
