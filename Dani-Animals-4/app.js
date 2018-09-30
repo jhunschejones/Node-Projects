@@ -1,7 +1,12 @@
+const newrelic = require('newrelic')
 const express = require('express')
 const bodyParser = require('body-parser')
-const animal = require('./routes/animal.route')
+const apiRout = require('./routes/animal.route')
+const homeRout = require('./routes/home.rout.js')
+const admin = require('firebase-admin')
+const serviceAccount = require('./dani-animals-4-firebase-adminsdk-wjr48-6138b5f03c.json')
 const app = express()
+
 
 // Set up database connection
 const mongoose = require('mongoose')
@@ -13,7 +18,24 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 app.use(bodyParser.json())
-app.use('/animals', animal)
+app.use('/api/v1', apiRout)
+app.use('/', homeRout)
+app.use(express.static(__dirname + '/views'));
+
+// authentication
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount)
+// })
+// const uid = 'test-uid'
+// const claims = {
+//   admin: false
+// }
+// admin.auth().createCustomToken(uid, claims).then((customToken) => {
+//   console.log(customToken)
+// }).catch((error) => {
+//   console.log(error)
+// })
+
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000')
