@@ -29,7 +29,7 @@ if (cluster.isMaster) {
 
   const app = new koa()
   const router = new koarouter()
-  const PORT = 3000
+  const PORT = process.env.PORT || 3000
   // request logging
   app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
   // serving up the public folder so we can get to it from our index.html
