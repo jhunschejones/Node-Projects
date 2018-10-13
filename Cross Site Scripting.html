@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Run some JavaScript</title>
+  </head>
+  <body>
+		<h2>Try to run some JavaScript in this input:</h1>
+		<h2 id="hidden-element" style="display:none;">This is hidden.</h2>
+		<input type=text id="input-text">
+		<input type=submit onclick="parseInput()">
+		<br/>
+		<div id="user-input"></div>
+
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script>
+			function parseInput() {
+				var input = $("#input-text").val()
+
+				input = safeParse(input)
+
+				console.log(input, typeof(input))
+				$("#user-input").append(input + "<br/>")
+				$("#input-text").val("")
+			}
+
+			function safeParse(content) {
+				// replace characters with html equivalents
+				//prevents some basic cross site scripting attacks
+				content = content.replace(/\</g, "&lt;").replace(/\>/g, "&gt;").replace(/\//g, "&#47;").replace(/\\/g, "&#92;").replace(/\(/g, "&#40;").replace(/\)/, "&#41;").replace(/\./g, "&#46;").replace(/\[/g, "&#91;").replace(/\]/g, "&#93;").replace(/\{/g, "&#123;").replace(/\}/g, "&#125;").replace(/\=/g, "&#61;")
+				return content
+			}
+
+			// <script>function runMyScript(){console.log("I'm up in your JavaScript!")}
+			// <input type=submit onclick="runMyScript()">
+		</script>
+  </body>
+</html>
