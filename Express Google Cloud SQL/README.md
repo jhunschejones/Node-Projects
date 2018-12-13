@@ -1,0 +1,6 @@
+# Express Google Cloud SQL
+
+## Overview
+Ever since I re-built the back end to Album tags in the fall of 2018, I've been playing with the idea of comparing the  performance of a single collection in MongoDB against a MySQL database with four tables. The first step of this process is deciding which cloud database provider I would use. This project is my first step in that direction. It consists of an Express app that accesses three tables hosted in a GCP Cloud SQL instance. My main concern was that breaking the NoSQL document data-structure out into SQL tables might require more complex database queries than could be easily executed from an Express app. The good news is, my fears turned out to be unfounded! This app successfully queries a results table created by joining all three tables, meaning I am now one step closer to a SQL Album Tags back end.
+
+To see the current version of Album Tags, check out the github repository [**here**](https://github.com/jhunschejones/Album-Tags) or the live site [**here**](https://www.albumtags.com/).
