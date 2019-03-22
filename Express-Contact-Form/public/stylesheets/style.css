@@ -1,0 +1,13 @@
+#mainTitle {
+  margin-top: 50px;
+}
+
+#inputName,
+#inputEmail,
+#inputMessage {
+  margin-bottom: 10px;
+}
+
+label {
+  margin-bottom: 0px;
+}
