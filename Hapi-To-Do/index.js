@@ -1,7 +1,7 @@
 var Hapi = require('hapi');
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://user:password1@ds119702.mlab.com:19702/hapi-practice');
+mongoose.connect(/*MongoDB connect string*/);
 var db = mongoose.connection;
 
 var taskSchema = mongoose.Schema({

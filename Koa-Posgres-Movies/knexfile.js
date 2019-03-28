@@ -5,7 +5,7 @@ const BASE_PATH = path.join(__dirname, 'src', 'server', 'db')
 module.exports = {
   development: {
     client: 'pg',
-    connection: 'postgres://postgres:password@localhost:5432/koa_api',
+    connection: /*postgres connection string*/,
     migrations: {
       directory: path.join(BASE_PATH, 'migrations')
     },

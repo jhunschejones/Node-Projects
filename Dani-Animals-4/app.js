@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const apiRout = require('./routes/animal.route')
 const homeRout = require('./routes/home.rout.js')
 const admin = require('firebase-admin')
-const serviceAccount = require('./dani-animals-4-firebase-adminsdk-wjr48-6138b5f03c.json')
+const serviceAccount = require(/*firebase cert*/)
 const app = express()
 
 
@@ -13,7 +13,7 @@ const mongoose = require('mongoose')
 // Handles depreceiation conflict between MongoDB and Mongoose, 
 // both have a findAndModify() function
 mongoose.set('useFindAndModify', false);
-mongoose.connect('mongodb://user:password@ds027819.mlab.com:27819/danianimals', { useNewUrlParser: true })
+mongoose.connect(/*Add MongoDB connection string here*/, { useNewUrlParser: true })
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 

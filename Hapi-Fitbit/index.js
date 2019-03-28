@@ -4,7 +4,7 @@ var Fitbit = require('fitbit-node')
 var mongoose = require('mongoose')
 var Q = require('q');
 
-mongoose.connect('mongodb://user:password1@ds119702.mlab.com:19702/hapi-practice');
+mongoose.connect(/*MongDB connect string*/);
 var db = mongoose.connection;
 
 var userSchema = mongoose.Schema({
@@ -16,7 +16,7 @@ var userSchema = mongoose.Schema({
 // here I am saying what collection to use
 var User = mongoose.model('hapi-fitbit', userSchema);
 
-var client = new Fitbit({clientId: '22CYYH', clientSecret: 'b86d0808e37117a2c4e2e22b64d9b563'});
+var client = new Fitbit({clientId: '', clientSecret: ''});
 var redirect_uri = "https://hapi-fitbit.herokuapp.com/fitbit_oauth_callback";
 var scope = "activity profile";
 
