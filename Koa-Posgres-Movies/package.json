@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "knex": "^0.13.0",
+    "knex": "^0.19.2",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
     "koa-favicon": "^2.0.1",
