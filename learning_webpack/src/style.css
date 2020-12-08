@@ -1,0 +1,12 @@
+h1 {
+  font-family: Arial, Helvetica, sans-serif;
+  color: blueviolet;
+}
+
+#image {
+  display: block;
+  background: url('forest.jpg');
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+}
